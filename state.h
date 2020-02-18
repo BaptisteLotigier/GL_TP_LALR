@@ -43,3 +43,51 @@ class E3 : public state
         ~E3();
         bool transition(automate & automate, symbole * s);
 };
+
+class E4 : public state
+{
+    public:
+        E4();
+        ~E4();
+        bool transition(automate & automate, symbole * s);
+};
+
+class E5 : public state
+{
+    public:
+        E5();
+        ~E5();
+        bool transition(automate & automate, symbole * s);
+};
+
+class E6 : public state
+{
+    public:
+        E6();
+        ~E6();
+        bool transition(automate & automate, symbole * s);
+};
+
+class E7 : public state
+{
+    public:
+        E7();
+        ~E7();
+        bool transition(automate & automate, symbole * s);
+};
+
+class E8 : public state
+{
+    public:
+        E8();
+        ~E8();
+        bool transition(automate & automate, symbole * s);
+};
+
+class E9 : public state
+{
+    public:
+        E9();
+        ~E9();
+        bool transition(automate & automate, symbole * s);
+};
