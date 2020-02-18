@@ -31,14 +31,14 @@ class Entier : public symbole {
 class Expr : public symbole {
    public:
       Expr() : symbole(EXPR) {};
-      virtual ~Expr();
+      virtual ~Expr() {};
       virtual int eval();
 };
 
 class Nombre : public Expr {
    public:
       Nombre(int val) : Expr(), val(val) {};
-      virtual ~Nombre();
+      virtual ~Nombre() {};
       int eval() {return val;};
 
    protected:
@@ -47,22 +47,22 @@ class Nombre : public Expr {
 
 class ExprPlus : public Expr {
    public:
-      ExprPlus(Expr lExpr, Expr rExpr) : Expr(), lExpr(lExpr), rExpr(rExpr) {};
-      virtual ~ExprPlus();
-      int eval() {return lExpr.eval() + rExpr.eval();};
+      ExprPlus(Expr *lExpr, Expr *rExpr) : Expr(), lExpr(lExpr), rExpr(rExpr) {};
+      virtual ~ExprPlus() {};
+      int eval() {return lExpr->eval() + rExpr->eval();};
 
    protected:
-      Expr lExpr;
-      Expr rExpr;
+      Expr *lExpr;
+      Expr *rExpr;
 };
 
 class ExprMult : public Expr {
    public:
-      ExprMult(Expr lExpr, Expr rExpr) : Expr(), lExpr(lExpr), rExpr(rExpr) {};
-      virtual ~ExprMult();
-      int eval() {return lExpr.eval() * rExpr.eval();};
+      ExprMult(Expr *lExpr, Expr *rExpr) : Expr(), lExpr(lExpr), rExpr(rExpr) {};
+      virtual ~ExprMult() {};
+      int eval() {return lExpr->eval() * rExpr->eval();};
 
    protected:
-      Expr lExpr;
-      Expr rExpr;
+      Expr *lExpr;
+      Expr *rExpr;
 };
