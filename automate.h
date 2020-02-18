@@ -13,6 +13,8 @@ class automate {
         ~automate();
         void decalage(symbole *s, state *state);
         void reduction(int n, symbole *s);
+        symbole* popSymbole();
+        void popAndDeleteSymbole();
 
     protected:
         stack<state*> *stateStack;

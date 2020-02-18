@@ -31,3 +31,14 @@ void automate::reduction(int n, symbole *s){
     }
     stateStack->top()->transition(*this, s);
 }
+
+symbole* automate::popSymbole() {
+    symbole* rSymbole = symboleStack->top();
+    symboleStack->pop();
+    return rSymbole;
+}
+
+void automate::popAndDeleteSymbole(){
+    delete(symboleStack->top());
+    symboleStack->pop();
+}

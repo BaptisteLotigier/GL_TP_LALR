@@ -34,7 +34,7 @@ symbole * Lexer::Consulter() {
                      i++;
                   }
                   tete = tete+i;
-                  tampon = new Entier(resultat);
+                  tampon = new Nombre(resultat);
                }
                else {
                   tampon = new symbole(ERREUR);
