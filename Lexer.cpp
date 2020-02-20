@@ -1,28 +1,35 @@
-#include "lexer.h"
+#include "Lexer.h"
 
-symbole * Lexer::Consulter() {
+Lexer::Lexer(std::string s)
+: flux(s), tete(0), tampon(nullptr)
+{}
+
+Lexer::~Lexer()
+{}
+
+Symbole* Lexer::Consulter() {
    if (!tampon) {
 
       if (tete==flux.length())
-         tampon = new symbole(FIN);
+         tampon = new Symbole(FIN);
       else
       {
 
          switch (flux[tete]) {
             case '(':
-               tampon = new symbole(OPENPAR);
+               tampon = new Symbole(OPENPAR);
                tete++;
                break;
             case ')':
-               tampon = new symbole(CLOSEPAR);
+               tampon = new Symbole(CLOSEPAR);
                tete++;
                break;
             case '*':
-               tampon = new symbole(MULT);
+               tampon = new Symbole(MULT);
                tete++;
                break;
             case '+':
-               tampon = new symbole(PLUS);
+               tampon = new Symbole(PLUS);
                tete++;
                break;
             default:
@@ -34,10 +41,10 @@ symbole * Lexer::Consulter() {
                      i++;
                   }
                   tete = tete+i;
-                  tampon = new Nombre(resultat);
+                  tampon = new Entier(resultat);
                }
                else {
-                  tampon = new symbole(ERREUR);
+                  tampon = new Symbole(ERREUR);
                }
          }
       }
