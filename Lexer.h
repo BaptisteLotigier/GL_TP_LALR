@@ -1,20 +1,17 @@
 #pragma once
-
+#include "Symbole.h"
 #include <string>
-#include "symbole.h"
-using namespace std;
 
-class Lexer {
+class Lexer
+{
+public:
+   Lexer(std::string s) : flux(s), tete(0), tampon(nullptr) {}
+   ~Lexer() {}
+   Symbole *Consulter();
+   void Avancer();
 
-   public:
-      Lexer(string s) : flux(s), tete(0), tampon(nullptr) {}
-      ~Lexer() {}
-
-      Symbole* Consulter();
-      void Avancer();
-
-   protected:
-      string flux;
-      int tete;
-      Symbole* tampon;
+protected:
+   std::string flux;
+   int tete;
+   Symbole *tampon;
 };

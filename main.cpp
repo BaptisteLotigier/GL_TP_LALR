@@ -1,23 +1,17 @@
+#include "Lexer.h"
+#include "Automate.h"
+
 #include <iostream>
-#include "lexer.h"
-#include "automate.h"
 
+int main(void)
+{
+   std::string chaine;
 
-int main(void) {
-   string chaine("(1+2)*((3+4)*5)");
-
-   // Lexer l(chaine);
-
-   // Symbole * s;
-   // while(*(s=l.Consulter())!=FIN) {
-   //    s->Affiche();
-   //    cout<<endl;
-   //    l.Avancer();
-   // }
+   std::cout << "Enter expression to analyse : ";
+   std::cin >> chaine;
 
    Automate a(new Lexer(chaine));
    a.start();
-   a.printStack();
 
    return 0;
 }
