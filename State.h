@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Symbole.h"
-#include "Automate.h"
+#include "symbole.h"
+#include "automate.h"
 
 class State {
     public:
         State();
         virtual ~State();
         virtual bool transition(Automate& automate, Symbole* s) = 0;
+        virtual string getName() = 0;
 };
 
 class E0 : public State {
@@ -15,6 +16,7 @@ class E0 : public State {
         E0();
         virtual ~E0();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E0";}
 };
 
 class E1 : public State {
@@ -22,6 +24,7 @@ class E1 : public State {
         E1();
         virtual ~E1();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E1";}
 };
 
 class E2 : public State {
@@ -29,6 +32,7 @@ class E2 : public State {
         E2();
         virtual ~E2();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E2";}
 };
 
 class E3 : public State {
@@ -36,6 +40,7 @@ class E3 : public State {
         E3();
         virtual ~E3();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E3";}
 };
 
 class E4 : public State {
@@ -43,6 +48,7 @@ class E4 : public State {
         E4();
         virtual ~E4();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E4";}
 };
 
 class E5 : public State {
@@ -50,6 +56,7 @@ class E5 : public State {
         E5();
         virtual ~E5();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E5";}
 };
 
 class E6 : public State {
@@ -57,6 +64,7 @@ class E6 : public State {
         E6();
         virtual ~E6();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E6";}
 };
 
 class E7 : public State {
@@ -64,6 +72,7 @@ class E7 : public State {
         E7();
         virtual ~E7();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E7";}
 };
 
 class E8 : public State {
@@ -71,6 +80,7 @@ class E8 : public State {
         E8();
         virtual ~E8();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E8";}
 };
 
 class E9 : public State {
@@ -78,4 +88,5 @@ class E9 : public State {
         E9();
         virtual ~E9();
         bool transition(Automate& automate, Symbole* s);
+        string getName() {return "E9";}
 };

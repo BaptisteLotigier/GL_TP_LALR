@@ -1,13 +1,6 @@
-#include "Lexer.h"
+#include "lexer.h"
 
-Lexer::Lexer(std::string s)
-: flux(s), tete(0), tampon(nullptr)
-{}
-
-Lexer::~Lexer()
-{}
-
-Symbole* Lexer::Consulter() {
+Symbole * Lexer::Consulter() {
    if (!tampon) {
 
       if (tete==flux.length())
@@ -41,7 +34,7 @@ Symbole* Lexer::Consulter() {
                      i++;
                   }
                   tete = tete+i;
-                  tampon = new Entier(resultat);
+                  tampon = new Entier(resultat, false);
                }
                else {
                   tampon = new Symbole(ERREUR);

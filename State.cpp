@@ -1,6 +1,6 @@
-#include "State.h"
+#include "state.h"
 
-//Generic class
+//State
 State::State()
 {}
 
@@ -16,18 +16,15 @@ E0::~E0()
 
 bool E0::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent())
+    switch (*s)
     {
-        case INT:
-            return automate.decalage(s, new E3);
-            break;
-            
         case OPENPAR:
-            return automate.decalage(s, new E2);
+            automate.decalage(s, new E2);
             break;
             
-        case EXPR:
-            return automate.decalage(s, new E1);
+        case INT:
+            if (s->isTerminal()) automate.decalage(s, new E3);
+            else automate.decalage(s, new E1);
             break;
             
         default:
@@ -45,13 +42,14 @@ E1::~E1()
 
 bool E1::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s)
+    {
         case PLUS:
-            return automate.decalage(s, new E4);
+            automate.decalage(s, new E4);
             break;
             
         case MULT:
-            return automate.decalage(s, new E5);
+            automate.decalage(s, new E5);
             break;
             
         case FIN:
@@ -72,17 +70,15 @@ E2::~E2()
 
 bool E2::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
-        case INT:
-            return automate.decalage(s, new E3);
-            break;
-            
+    switch (*s)
+        {
         case OPENPAR:
-            return automate.decalage(s, new E2);
+            automate.decalage(s, new E2);
             break;
             
-        case EXPR:
-            return automate.decalage(s, new E6);
+        case INT:
+            if (s->isTerminal()) automate.decalage(s, new E3);
+            else automate.decalage(s, new E6);
             break;
             
         default:
@@ -100,14 +96,15 @@ E3::~E3()
 
 bool E3::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s) {
         case PLUS:
         case MULT:
         case CLOSEPAR:
         case FIN:
         {
-            Expr* s = (Expr*) automate.popSymbole();
-            return automate.reduction(s, 1);
+            Entier* s = (Entier*) automate.popSymbole();
+            s->setIsExpr(true);
+            automate.reduction(s, 1);
             break;
         }
 
@@ -126,17 +123,15 @@ E4::~E4()
 
 bool E4::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
-        case INT:
-            return automate.decalage(s, new E3);
-            break;
-            
+    switch (*s)
+    {
         case OPENPAR:
-            return automate.decalage(s, new E2);
+            automate.decalage(s, new E2);
             break;
             
-        case EXPR:
-            return automate.decalage(s, new E7);
+        case INT:
+            if (s->isTerminal()) automate.decalage(s, new E3);
+            else automate.decalage(s, new E7);
             break;
             
         default:
@@ -154,17 +149,15 @@ E5::~E5()
 
 bool E5::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
-        case INT:
-            return automate.decalage(s, new E3);
-            break;
-            
+    switch (*s)
+    {
         case OPENPAR:
-            return automate.decalage(s, new E2);
+            automate.decalage(s, new E2);
             break;
             
-        case EXPR:
-            return automate.decalage(s, new E8);
+        case INT:
+            if (s->isTerminal()) automate.decalage(s, new E3);
+            else automate.decalage(s, new E8);
             break;
             
         default:
@@ -182,17 +175,18 @@ E6::~E6()
 
 bool E6::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s)
+    {
         case PLUS:
-            return automate.decalage(s, new E4);
+            automate.decalage(s, new E4);
             break;
             
         case MULT:
-            return automate.decalage(s, new E5);
+            automate.decalage(s, new E5);
             break;
             
         case CLOSEPAR:
-            return automate.decalage(s, new E9);
+            automate.decalage(s, new E9);
             break;
             
         default:
@@ -210,20 +204,21 @@ E7::~E7()
 
 bool E7::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s)
+    {
         case PLUS:
         case CLOSEPAR:
         case FIN:
         {
-            Expr* s1 = (Expr*) automate.popSymbole();
+            Entier* e1 = (Entier*) automate.popSymbole();
             automate.popAndDeleteSymbole();
-            Expr* s2 = (Expr*) automate.popSymbole();
-            return automate.reduction(new ExprPlus(s1, s2), 3);
+            Entier* e2 = (Entier*) automate.popSymbole();
+            automate.reduction(new Entier(e1->getValeur() + e2->getValeur(), true), 3);
             break;
         }
 
         case MULT:
-            return automate.decalage(s, new E5);
+            automate.decalage(s, new E5);
             break;
             
         default:
@@ -241,16 +236,17 @@ E8::~E8()
 
 bool E8::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s)
+    {
         case PLUS:
         case MULT:
         case CLOSEPAR:
         case FIN:
         {
-            Expr* s1 = (Expr*) automate.popSymbole();
+            Entier* e1 = (Entier*) automate.popSymbole();
             automate.popAndDeleteSymbole();
-            Expr* s2 = (Expr*) automate.popSymbole();
-            return automate.reduction(new ExprMult(s1, s2), 3);
+            Entier* e2 = (Entier*) automate.popSymbole();
+            automate.reduction(new Entier(e1->getValeur() * e2->getValeur(), true), 3);
             break;
         }
             
@@ -269,16 +265,17 @@ E9::~E9()
 
 bool E9::transition(Automate& automate, Symbole* s)
 {
-    switch (s->getIdent()) {
+    switch (*s)
+    {
         case PLUS:
         case MULT:
         case CLOSEPAR:
         case FIN:
         {
             automate.popAndDeleteSymbole();
-            Expr* s = (Expr*) automate.popSymbole();
+            Entier* e = (Entier*) automate.popSymbole();
             automate.popAndDeleteSymbole();
-            return automate.reduction(s, 3);
+            automate.reduction(e, 3);
             break;
         }
             

@@ -1,65 +1,33 @@
 #pragma once
 
 #include <string>
+using namespace std;
 
-enum Identificateurs { OPENPAR, CLOSEPAR, PLUS, MULT, INT, FIN, ERREUR, EXPR };
+enum Identificateurs { OPENPAR, CLOSEPAR, PLUS, MULT, INT, FIN, ERREUR };
 
-const std::string Etiquettes[] = { "OPENPAR", "CLOSEPAR", "PLUS", "MULT", "INT", "FIN", "ERREUR", "EXPR" };
+const string Etiquettes[] = { "OPENPAR", "CLOSEPAR", "PLUS", "MULT", "INT", "FIN", "ERREUR" };
 
-class Symbole
-{
-    public:
-        Symbole(int id, bool terminal);
-        Symbole(int id);
-        virtual ~Symbole();
-        bool isTerminal();
-        void Affiche();
-        int getIdent();
+class Symbole {
+   public:
+      Symbole(int i) : ident(i) {}
+      virtual ~Symbole() {}
+      operator int() const { return ident; }
+      virtual bool isTerminal() { return true; }
+      virtual void Affiche();
 
-    protected:
-        int ident;
-        bool terminal;
+   protected:
+      int ident;
 };
 
-class Expr : public Symbole
-{
-    public:
-        Expr(int id, bool terminal);
-        virtual ~Expr();
-        virtual int eval() = 0;
-};
-
-class ExprPlus : public Expr
-{
-    public:
-        ExprPlus(Expr* lExpr, Expr* rExpr);
-        virtual ~ExprPlus();
-        int eval();
-
-    protected:
-        Expr* lExpr;
-        Expr* rExpr;
-};
-
-class ExprMult : public Expr
-{
-    public:
-        ExprMult(Expr* lExpr, Expr* rExpr);
-        virtual ~ExprMult();
-        int eval();
-
-    protected:
-        Expr* lExpr;
-        Expr* rExpr;
-};
-
-class Entier : public Expr
-{
-    public:
-        Entier(int value);
-        virtual ~Entier();
-        int eval();
-
-    protected:
-        int value;
+class Entier : public Symbole {
+   public:
+      Entier(int v, bool isExpr) : Symbole(INT), valeur(v), isExpr(isExpr) {}
+      ~Entier() {}
+      virtual bool isTerminal() { return !isExpr; }
+      virtual void Affiche();
+      int getValeur() { return valeur; }
+      void setIsExpr(bool newIsExper) { isExpr=newIsExper;}
+   protected:
+      int valeur;
+      bool isExpr;
 };

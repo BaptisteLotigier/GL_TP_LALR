@@ -1,19 +1,23 @@
-#include "Symbole.h"
-#include "Lexer.h"
-#include "Automate.h"
-
 #include <iostream>
-#include <stack>
+#include "lexer.h"
+#include "automate.h"
 
-int main(int argc, char const *argv[])
-{
-    std::string m = "1*2";
 
-    Lexer *l = new Lexer(m);
+int main(void) {
+   string chaine("(1+2)*((3+4)*5)");
 
-    Automate a(l);
+   // Lexer l(chaine);
 
-    std::cout << a.start() << std::endl;
+   // Symbole * s;
+   // while(*(s=l.Consulter())!=FIN) {
+   //    s->Affiche();
+   //    cout<<endl;
+   //    l.Avancer();
+   // }
 
-    return 0;
+   Automate a(new Lexer(chaine));
+   a.start();
+   a.printStack();
+
+   return 0;
 }

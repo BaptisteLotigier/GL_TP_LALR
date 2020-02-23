@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Symbole.h"
-#include "Lexer.h"
+#include "symbole.h"
+#include "lexer.h"
 
 #include <vector>
 
@@ -9,17 +9,17 @@ class State;
 
 class Automate {
     public:
-        Automate(Lexer *lexer);
+        Automate(Lexer* lexer);
         virtual ~Automate();
-        bool decalage(Symbole* s, State* state);
-        bool reduction(Symbole* s, int n);
+        void decalage(Symbole* s, State* state);
+        void reduction(Symbole* s, int n);
         Symbole* popSymbole();
         void popAndDeleteSymbole();
         bool start();
         void printStack();
 
     protected:
-        std::vector<State*> *stateStack;
-        std::vector<Symbole*> *symboleStack;
-        Lexer *lexer;
+        vector<State*> *stateStack;
+        vector<Symbole*> *symboleStack;
+        Lexer* lexer;
 };
