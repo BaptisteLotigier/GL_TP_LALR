@@ -23,10 +23,11 @@ bool E0::transition(Automate &automate, Symbole *s)
         break;
 
     case INT:
-        if (s->isTerminal())
-            automate.decalage(s, new E3);
-        else
-            automate.decalage(s, new E1);
+        automate.decalage(s, new E3);
+        break;
+
+    case EXPR:
+        automate.decalage(s, new E1);
         break;
 
     default:
@@ -81,10 +82,11 @@ bool E2::transition(Automate &automate, Symbole *s)
         break;
 
     case INT:
-        if (s->isTerminal())
-            automate.decalage(s, new E3);
-        else
-            automate.decalage(s, new E6);
+        automate.decalage(s, new E3);
+        break;
+
+    case EXPR:
+        automate.decalage(s, new E6);
         break;
 
     default:
@@ -111,8 +113,9 @@ bool E3::transition(Automate &automate, Symbole *s)
     case FIN:
     {
         Entier *s = (Entier *)automate.popSymbole();
-        s->setIsExpr(true);
-        automate.reduction(s, 1);
+        int value = s->getValeur();
+        delete(s);
+        automate.reduction(new Number(value), 1);
         break;
     }
 
@@ -139,10 +142,11 @@ bool E4::transition(Automate &automate, Symbole *s)
         break;
 
     case INT:
-        if (s->isTerminal())
-            automate.decalage(s, new E3);
-        else
-            automate.decalage(s, new E7);
+        automate.decalage(s, new E3);
+        break;
+    
+    case EXPR:
+        automate.decalage(s, new E7);
         break;
 
     default:
@@ -168,10 +172,11 @@ bool E5::transition(Automate &automate, Symbole *s)
         break;
 
     case INT:
-        if (s->isTerminal())
-            automate.decalage(s, new E3);
-        else
-            automate.decalage(s, new E8);
+        automate.decalage(s, new E3);
+        break;
+
+    case EXPR:
+        automate.decalage(s, new E8);
         break;
 
     default:
@@ -226,10 +231,10 @@ bool E7::transition(Automate &automate, Symbole *s)
     case CLOSEPAR:
     case FIN:
     {
-        Entier *e1 = (Entier *)automate.popSymbole();
+        Expr *e1 = (Expr *)automate.popSymbole();
         automate.popAndDeleteSymbole();
-        Entier *e2 = (Entier *)automate.popSymbole();
-        automate.reduction(new Entier(e1->getValeur() + e2->getValeur(), true), 3);
+        Expr *e2 = (Expr *)automate.popSymbole();
+        automate.reduction(new ExprPlus(e1, e2), 3);
         break;
     }
 
@@ -260,10 +265,10 @@ bool E8::transition(Automate &automate, Symbole *s)
     case CLOSEPAR:
     case FIN:
     {
-        Entier *e1 = (Entier *)automate.popSymbole();
+        Expr *e1 = (Expr *)automate.popSymbole();
         automate.popAndDeleteSymbole();
-        Entier *e2 = (Entier *)automate.popSymbole();
-        automate.reduction(new Entier(e1->getValeur() * e2->getValeur(), true), 3);
+        Expr *e2 = (Expr *)automate.popSymbole();
+        automate.reduction(new ExprMult(e1, e2), 3);
         break;
     }
 
@@ -291,7 +296,7 @@ bool E9::transition(Automate &automate, Symbole *s)
     case FIN:
     {
         automate.popAndDeleteSymbole();
-        Entier *e = (Entier *)automate.popSymbole();
+        Expr *e = (Expr *)automate.popSymbole();
         automate.popAndDeleteSymbole();
         automate.reduction(e, 3);
         break;

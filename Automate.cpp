@@ -14,16 +14,28 @@ Automate::Automate(Lexer *lexer)
 
 Automate::~Automate()
 {
+    for(int i = 0; i < stateStack->size(); i++)
+    {
+        delete(stateStack->at(i));
+    }
     delete (stateStack);
+
+    for(int i = 0; i < symboleStack->size(); i++)
+    {
+        delete(symboleStack->at(i));
+    }
     delete (symboleStack);
+
+    delete (lexer);
 }
 
 void Automate::start()
 {
     bool end = false;
+    Symbole *s;
     while (!end && !error)
     {
-        Symbole *s = lexer->Consulter();
+        s = lexer->Consulter();
         State *state = stateStack->back();
         end = state->transition(*this, s);
     }
@@ -36,9 +48,10 @@ void Automate::start()
     if(end)
     {
         std::cout << "Expression correctly recognized" << std::endl;
-        std::cout << "Value of expression : " << ((Entier*)symboleStack->back())->getValeur() << std::endl;
+        std::cout << "Value of expression : " << ((Expr*)symboleStack->back())->eval() << std::endl;
     }
 
+    delete(s);
 }
 
 void Automate::decalage(Symbole *s, State *state)
@@ -82,7 +95,7 @@ void Automate::reduction(Symbole *s, int n)
 #ifdef VERBOSE
     std::cout << "after reduction" << std::endl;
     printStack();
-    std::cout << "###########" << std::endl;
+    std::cout << "########################" << std::endl;
 #endif
 
     stateStack->back()->transition(*this, s);
